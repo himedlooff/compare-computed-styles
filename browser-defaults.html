@@ -6,7 +6,7 @@
 <body>
 	<script type="text/javascript" src="compare-computed-styles.js"></script>
 	<script type="text/javascript">
-		var elements = window.location.search.substring(1).split('elements=')[1].split('&')[0].split(',');
+		var elements = getElementsList();
 		var defaultStyles = {};
 		var defaultStylesJSON = '';
 
@@ -22,6 +22,15 @@
 		document.body.innerHTML = defaultStylesJSON;
 		document.body.style.whiteSpace = 'pre';
 		document.body.style.fontFamily = 'monospace';
+
+		function getElementsList() {
+			var querystring = window.location.search;
+			if (querystring.indexOf('elements=') !== -1) {
+				return querystring.substring(1).split('elements=')[1].split('&')[0].split(',');
+			} else {
+				return [];
+			}
+		}
 	</script>
 </body>
 </html>
