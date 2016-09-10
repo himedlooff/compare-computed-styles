@@ -1,6 +1,25 @@
-CompareComputedStyles = function(selector) {
+CompareComputedStyles = function(selector, defaultElements) {
 	var rootNode = document.querySelectorAll(selector);
 	var data = false;
+
+	// if (defaultElements) {
+	// 	var xhr = new XMLHttpRequest();
+	// 	var querystring = '?elements=' + defaultElements.join(',');
+	// 	xhr.open('POST', 'https://himedlooff.github.io/compare-computed-styles/browser-defaults.html' + querystring);
+	// 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	// 	xhr.send(null);
+	// 	xhr.onreadystatechange = function () {
+	// 		var DONE = 4; // readyState 4 means the request is done.
+	// 		var OK = 200; // status 200 is a successful return.
+	// 		if (xhr.readyState === DONE) {
+	// 			if (xhr.status === OK) {
+	// 				console.log(xhr.responseText); // 'This is the returned text.'
+	// 			} else {
+	// 				console.log('Error: ' + xhr.status); // An error occurred during the request.
+	// 			}
+	// 		}
+	// 	};
+	// }
 
 	if (rootNode.length) {
 		data = getNodeInfo(rootNode[0]);
