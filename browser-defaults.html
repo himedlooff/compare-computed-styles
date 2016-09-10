@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Browser Defaults</title>
+</head>
+<body>
+	<script type="text/javascript" src="compare-computed-styles.js"></script>
+	<script type="text/javascript">
+		var elements = window.location.search.substring(1).split('elements=')[1].split('&')[0].split(',');
+		var defaultStyles = {};
+		var defaultStylesJSON = '';
+
+		for (var i = 0; i < elements.length; ++i) {
+			var tagName = elements[i];
+			var node = document.body.appendChild(document.createElement(tagName));
+			defaultStyles[tagName] = CompareComputedStyles(tagName).styles;
+			node.remove();
+		}
+
+		defaultStylesJSON = JSON.stringify(defaultStyles, null, 2);
+
+		document.body.innerHTML = defaultStylesJSON;
+		document.body.style.whiteSpace = 'pre';
+		document.body.style.fontFamily = 'monospace';
+	</script>
+</body>
+</html>
