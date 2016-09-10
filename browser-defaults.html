@@ -19,9 +19,15 @@
 
 		defaultStylesJSON = JSON.stringify(defaultStyles, null, 2);
 
-		document.body.innerHTML = defaultStylesJSON;
-		document.body.style.whiteSpace = 'pre';
-		document.body.style.fontFamily = 'monospace';
+		var fileURL = 'data:application/json;charset=utf8,' + encodeURIComponent(defaultStylesJSON);
+		var downloadLink = document.body.appendChild(document.createElement('a'));
+		downloadLink.href = fileURL;
+		downloadLink.download = elements.join('_') + '.json';
+		downloadLink.innerHTML = 'Download';
+
+		var pre = document.body.appendChild(document.createElement('pre'));
+		pre.innerHTML = defaultStylesJSON;
+		pre.contentEditable = 'true';
 
 		function getElementsList() {
 			var querystring = window.location.search;
