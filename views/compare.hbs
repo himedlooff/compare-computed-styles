@@ -1,0 +1,20 @@
+<script src="/bower_components/jsondiffpatch/public/build/jsondiffpatch-full.min.js"></script>
+<script src="/bower_components/jsondiffpatch/public/build/jsondiffpatch-formatters.min.js"></script>
+<link rel="stylesheet" href="/bower_components/jsondiffpatch/public/formatters-styles/html.css" type="text/css" />
+<link rel="stylesheet" href="/bower_components/jsondiffpatch/public/formatters-styles/annotated.css" type="text/css" />
+
+{{!--
+<h1>File 1</h1>
+<pre>{{file1}}</pre>
+<h1>File 2</h1>
+<pre>{{file2}}</pre>
+--}}
+<div id="visual"></div>
+
+<script type="text/javascript">
+  var left = {{{file1}}};
+  var right = {{{file2}}};
+  var delta = jsondiffpatch.diff(left, right);
+  jsondiffpatch.formatters.html.hideUnchanged();
+  document.getElementById('visual').innerHTML = jsondiffpatch.formatters.html.format(delta, left);
+</script>

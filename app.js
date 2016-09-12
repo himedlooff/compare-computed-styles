@@ -9,6 +9,7 @@ var routes = require('./routes/index');
 var compute = require('./routes/compute');
 var elements = require('./routes/elements');
 var ids = require('./routes/ids');
+var compare = require('./routes/compare');
 
 var app = express();
 
@@ -31,11 +32,13 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/bower_components',  express.static( path.join(__dirname, '/bower_components')));
 
 app.use('/', routes);
 app.use('/compute', compute);
 app.use('/elements', elements);
 app.use('/ids', ids);
+app.use('/compare', compare);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
