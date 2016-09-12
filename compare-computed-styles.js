@@ -1,31 +1,17 @@
-CompareComputedStyles = function(selector, defaultElements) {
+CompareComputedStyles = function(selector, removeDefaults, callback) {
 	var rootNode = document.querySelectorAll(selector);
-	var data = false;
+	var defaults = {};
+	var totalDefaultsLoading = 0;
+	var data = rootNode.length ? getNodeInfo(rootNode[0]) : {};
 
-	// if (defaultElements) {
-	// 	var xhr = new XMLHttpRequest();
-	// 	var querystring = '?elements=' + defaultElements.join(',');
-	// 	xhr.open('POST', 'https://himedlooff.github.io/compare-computed-styles/browser-defaults.html' + querystring);
-	// 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	// 	xhr.send(null);
-	// 	xhr.onreadystatechange = function () {
-	// 		var DONE = 4; // readyState 4 means the request is done.
-	// 		var OK = 200; // status 200 is a successful return.
-	// 		if (xhr.readyState === DONE) {
-	// 			if (xhr.status === OK) {
-	// 				console.log(xhr.responseText); // 'This is the returned text.'
-	// 			} else {
-	// 				console.log('Error: ' + xhr.status); // An error occurred during the request.
-	// 			}
-	// 		}
-	// 	};
-	// }
-
-	if (rootNode.length) {
-		data = getNodeInfo(rootNode[0]);
+	if (removeDefaults) {
+		populateDefaults(defaults, function() {
+			removeDefaultStyles(data);
+			callback(data);
+		});
+	} else {
+		callback(data);
 	}
-
-	return data;
 
 	function getNodeInfo(targetNode) {
 		var id = targetNode.getAttribute('id');
@@ -34,11 +20,13 @@ CompareComputedStyles = function(selector, defaultElements) {
 		var styles = {};
 		var children = [];
 
+		if (!defaults[tagName]) {
+			defaults[tagName] = '';
+		}
+
 		var elementStyles = getStyleProps(targetNode);
 		for(var key in elementStyles) {
-			// if (defaultElements[tagName].styles[key] !== elementStyles[key]) {
-				styles[key] = elementStyles[key];
-			// }
+			styles[key] = elementStyles[key];
 		}
 
 		for (var i = 0; i < targetNode.children.length; ++i) {
@@ -69,7 +57,52 @@ CompareComputedStyles = function(selector, defaultElements) {
 		return simpleStyleObj;
 	}
 
-	function removeDefaults() {
+	function populateDefaults(defaults, callback) {
+		for (var tagName in defaults) {
+			totalDefaultsLoading++;
+			getDefaultElementStyles(tagName, function(tagName, json) {
+				defaults[tagName] = json;
+				--totalDefaultsLoading;
+				if (totalDefaultsLoading <= 0) {
+					console.log('Done loading all defaults');
+					callback();
+				}
+			});
+		}
+	}
 
+	function removeDefaultStyles(targetNodeData) {
+		var tagName = targetNodeData.tagName;
+
+		if (defaults[tagName]) {
+			for(var key in targetNodeData.styles) {
+				if (defaults[tagName][key] === targetNodeData.styles[key]) {
+					delete targetNodeData.styles[key];
+				}
+			}
+		} else {
+			console.log('Missing defaults for ', tagName);
+		}
+
+		for (var i = 0; i < targetNodeData.children.length; ++i) {
+			removeDefaultStyles(targetNodeData.children[i]);
+		}
+	}
+
+	function getDefaultElementStyles(tagName, callback) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', 'http://127.0.0.1:3000/json/' + tagName + '.json');
+		xhr.send();
+		xhr.onreadystatechange = function () {
+			var DONE = 4; // readyState 4 means the request is done.
+			var OK = 200; // status 200 is a successful return.
+			if (xhr.readyState === DONE) {
+				if (xhr.status === OK) {
+					callback(tagName, JSON.parse(xhr.responseText));
+				} else {
+					console.log('Error: ' + xhr.status);
+				}
+			}
+		};
 	}
 };
