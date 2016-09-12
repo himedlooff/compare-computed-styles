@@ -1,0 +1,31 @@
+<script type="text/javascript" src="../javascripts/compare-computed-styles.js"></script>
+<script type="text/javascript">
+
+  var tagName = window.location.pathname.replace('/compute/', '');
+  var node = document.body.appendChild(document.createElement(tagName));
+  var defaultStyles;
+  var defaultStylesJSON;
+
+  CompareComputedStyles(tagName, false, function(data) {
+    defaultStyles = data.styles;
+    defaultStylesJSON = JSON.stringify(defaultStyles, null, 2);
+  });
+
+  node.remove();
+
+  var fileURL = 'data:application/json;charset=utf8,' + encodeURIComponent(defaultStylesJSON);
+  var downloadLink = document.body.appendChild(document.createElement('a'));
+  downloadLink.href = fileURL;
+  downloadLink.download = tagName + '.json';
+  downloadLink.innerHTML = 'Download';
+
+  var pre = document.body.appendChild(document.createElement('pre'));
+  pre.innerHTML = defaultStylesJSON;
+  pre.contentEditable = 'true';
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', window.location.pathname);
+  xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+  xhr.send(defaultStylesJSON);
+
+</script>

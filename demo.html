@@ -12,7 +12,7 @@
 			box-shadow: 2px 2px 0 1px rgba(0,0,0,.2);
 		}
 	</style>
-	<script type="text/javascript" src="compare-computed-styles.js"></script>
+	<script type="text/javascript" src="public/javascripts/compare-computed-styles.js"></script>
 </head>
 <body>
 	<section id="my-section-1" class="one two three">
@@ -22,7 +22,7 @@
 	</section>
 
 	<script type="text/javascript">
-		CompareComputedStyles('#my-section-2', false, function(data) {
+		CompareComputedStyles('#my-section-2', true, function(data) {
 			console.log(data);
 		});
 	</script>
