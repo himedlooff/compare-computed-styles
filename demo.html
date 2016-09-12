@@ -22,7 +22,9 @@
 	</section>
 
 	<script type="text/javascript">
-		CompareComputedStyles('#my-section-2');
+		CompareComputedStyles('#my-section-2', function(styles) {
+			console.log(styles);
+		});
 	</script>
 </body>
 </html>
