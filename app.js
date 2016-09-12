@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var compute = require('./routes/compute');
 var elements = require('./routes/elements');
+var ids = require('./routes/ids');
 
 var app = express();
 
@@ -25,6 +26,8 @@ app.use(cookieParser());
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methods', 'POST');
   next();
 });
 app.use(express.static(path.join(__dirname, 'public')));
@@ -32,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/compute', compute);
 app.use('/elements', elements);
+app.use('/ids', ids);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,4 +1,4 @@
-CompareComputedStyles = function(selector, callback) {
+CompareComputedStyles = function(selector, removeDefaults, callback) {
 	var rootNode = document.querySelectorAll(selector);
 	var defaults = {};
 	var totalDefaultsLoading = 0;
@@ -6,10 +6,14 @@ CompareComputedStyles = function(selector, callback) {
 
 	callback = callback ? callback : function() {};
 
-	populateDefaults(defaults, function() {
-		removeDefaultStyles(data);
+	if (removeDefaults) {
+		populateDefaults(defaults, function() {
+			removeDefaultStyles(data);
+			callback(data);
+		});
+	} else {
 		callback(data);
-	});
+	}
 
 	function getNodeInfo(targetNode) {
 		var id = targetNode.getAttribute('id');
@@ -102,4 +106,23 @@ CompareComputedStyles = function(selector, callback) {
 			}
 		};
 	}
+
+	this.save = function(id, data, callback) {
+		id = id.replace('#', '');
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'http://127.0.0.1:3000/ids/' + id);
+		xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+		xhr.send(JSON.stringify(data));
+		xhr.onreadystatechange = function () {
+			var DONE = 4; // readyState 4 means the request is done.
+			var OK = 200; // status 200 is a successful return.
+			if (xhr.readyState === DONE) {
+				if (xhr.status === OK) {
+					callback(data);
+				} else {
+					console.log('Error: ' + xhr.status);
+				}
+			}
+		};
+	};
 };

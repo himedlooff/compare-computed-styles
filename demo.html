@@ -3,7 +3,11 @@
 <head>
 	<title>TreeStyles</title>
 	<style type="text/css">
+		body {
+			font-size: 18px;
+		}
 		.btn {
+			font-size: 1em;
 			font-family: Verdana;
 			background: tomato;
 			border: 0;
@@ -22,8 +26,11 @@
 	</section>
 
 	<script type="text/javascript">
-		CompareComputedStyles('#my-section-2', function(styles) {
+		var computedStyles = new CompareComputedStyles('#my-section-2', true, function(styles) {
 			console.log(styles);
+			computedStyles.save('test2', styles, function() {
+				console.log('saved them');
+			});
 		});
 	</script>
 </body>

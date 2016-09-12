@@ -1,0 +1,51 @@
+{
+  "id": "my-section-2",
+  "class": null,
+  "tagName": "SECTION",
+  "styles": {
+    "font-family": "Times",
+    "font-size": "18px",
+    "height": "58px",
+    "width": "805px",
+    "perspective-origin": "402.5px 29px",
+    "transform-origin": "402.5px 29px"
+  },
+  "children": [
+    {
+      "id": null,
+      "class": "btn",
+      "tagName": "BUTTON",
+      "styles": {
+        "background-color": "rgb(255, 99, 71)",
+        "border-bottom-color": "rgb(255, 255, 255)",
+        "border-left-color": "rgb(255, 255, 255)",
+        "border-left-style": "none",
+        "border-left-width": "0px",
+        "border-right-color": "rgb(255, 255, 255)",
+        "border-right-style": "none",
+        "border-right-width": "0px",
+        "border-top-color": "rgb(255, 255, 255)",
+        "box-shadow": "rgba(0, 0, 0, 0.2) 2px 2px 0px 1px",
+        "color": "rgb(255, 255, 255)",
+        "font-family": "Verdana",
+        "font-size": "18px",
+        "height": "58px",
+        "min-height": "0px",
+        "outline-color": "rgb(255, 255, 255)",
+        "padding-bottom": "18px",
+        "padding-left": "18px",
+        "padding-right": "18px",
+        "padding-top": "18px",
+        "width": "96.2344px",
+        "-webkit-appearance": "none",
+        "column-rule-color": "rgb(255, 255, 255)",
+        "perspective-origin": "48.1094px 29px",
+        "-webkit-text-emphasis-color": "rgb(255, 255, 255)",
+        "-webkit-text-fill-color": "rgb(255, 255, 255)",
+        "-webkit-text-stroke-color": "rgb(255, 255, 255)",
+        "transform-origin": "48.1094px 29px"
+      },
+      "children": []
+    }
+  ]
+}
