@@ -1,17 +1,15 @@
-CompareComputedStyles = function(selector, removeDefaults, callback) {
+CompareComputedStyles = function(selector, callback) {
 	var rootNode = document.querySelectorAll(selector);
 	var defaults = {};
 	var totalDefaultsLoading = 0;
 	var data = rootNode.length ? getNodeInfo(rootNode[0]) : {};
 
-	if (removeDefaults) {
-		populateDefaults(defaults, function() {
-			removeDefaultStyles(data);
-			callback(data);
-		});
-	} else {
+	callback = callback ? callback : function() {};
+
+	populateDefaults(defaults, function() {
+		removeDefaultStyles(data);
 		callback(data);
-	}
+	});
 
 	function getNodeInfo(targetNode) {
 		var id = targetNode.getAttribute('id');
