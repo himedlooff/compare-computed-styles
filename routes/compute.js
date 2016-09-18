@@ -1,10 +1,17 @@
-var fs = require('fs');
-
 var express = require('express');
 var router = express.Router();
 
+var firebase = require('firebase');
+firebase.initializeApp({
+  serviceAccount: process.env.COMPUTED_STYLES_DIFF_SERVICE_ACCOUNT,
+  databaseURL: process.env.COMPUTED_STYLES_DIFF_DATABASE_URL
+});
+
 router.get('/', function(req, res, next) {
-  res.send('TODO: list all files in public/json');
+  firebase.database().ref('/elements/').once('value')
+  .then(function(snapshot) {
+    res.render('compute-index', { title: 'Express', elements: Object.keys(snapshot.val()) });
+  });
 });
 
 router.get('/:tagname', function(req, res, next) {
@@ -12,14 +19,13 @@ router.get('/:tagname', function(req, res, next) {
 });
 
 router.post('/:tagname', function (req, res) {
-  var filePath = './public/json/' + req.params.tagname + '.json';
-  fs.writeFile(filePath, JSON.stringify(req.body, null, 2), function(error) {
-    if (error) {
-      console.log(error);
-      res.status(500).send('Error writing to ' + filePath);
-    } else {
-      res.status(200).send('Success writing to ' + filePath);
-    }
+  firebase.database().ref('elements/' + req.params.tagname).set(JSON.stringify(req.body))
+  .then(function(val) {
+    res.status(200).send('Success');
+  })
+  .catch(function() {
+    console.log(error);
+    res.status(500).send('Error:', error);
   });
 });
 
